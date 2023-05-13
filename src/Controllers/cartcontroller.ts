@@ -2,9 +2,27 @@ import { Request, Response } from 'express';
 import { sqlConfig } from "../config";
 import mssql from 'mssql'
 
-export const addToCart = async (req: Request, res: Response): Promise<void> => {
+
+// interface Product {
+//   id: string;
+//   name: string;
+//   description: string;
+//   images: string[];
+//   price: Price; // Use the Price type alias here
+// }
+
+interface ExtendedProduct extends Request{
+ body: {id: string;
+  name: string;
+  description: string;
+  quantity:string,
+  images: string[];
+  price: number}
+}
+export const addToCart = async (req:ExtendedProduct, res: Response): Promise<void> => {
   try {
-    const { user_id, product_id, quantity, price } = req.body;
+    const {  quantity, price } = req.body;
+    const {user_id, product_id}= req.params
     const pool = await mssql.connect(sqlConfig);
     const transaction = new mssql.Transaction(pool);
     await transaction.begin();
