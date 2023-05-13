@@ -1,4 +1,3 @@
-import { updateProduct } from "../Controllers/Productscontroller";
 import { deleteUser, getAllUsersController, getSingleUser, registerusercontroller,loginUser} from "../Controllers/UserController";
 import { Router } from "express";
 

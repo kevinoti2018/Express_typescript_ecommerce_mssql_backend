@@ -1,0 +1,7 @@
+CREATE TABLE CART (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(10,2) NOT NULL
+);
