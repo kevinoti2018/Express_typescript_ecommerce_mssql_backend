@@ -4,7 +4,7 @@ import mssql from 'mssql'
 import bcrypt from 'bcrypt';
 import {v4 as uid} from 'uuid'
 import jwt from 'jsonwebtoken'
-import { registrationSchema } from "../Helpers/joiauth";
+import { registrationSchema, resetPasswordSchema } from "../Helpers/joiauth";
 interface ExtendedRequest extends Request{
     body:{
         id:string,
@@ -67,6 +67,7 @@ export const getAllUsersController:RequestHandler=async(req,res)=>{
          return res.status(500).json(error.message)
     }
 }
+
 export const getSingleUser=async(req:Request<{id:string}>,res:Response)=>{
    try {
        let {id}=req.params
@@ -90,8 +91,14 @@ export const deleteUser=async(req:Request<{id:string}>,res:Response)=>{
          
         let {id}=req.params
         let pool=await mssql.connect(sqlConfig)
-        let user:User[]=( await (await pool.request()).input('id',id).execute('deleteUser')).recordset
-        return res.status(200).json({message:"user deleted successfully"})
+        let user= await pool.request().input('id',id).execute('deleteUser')
+        if(user.rowsAffected[0]>0){
+          return res.status(200).json({message:"user deleted successfully"})
+        }
+        else{
+          return res.status(404).json({message:"user does not exist"})
+        }
+        
 
     } catch (error:any) {
         res.status(500).json(error.message)
@@ -124,3 +131,23 @@ export const loginUser = async (req: Request<{ email: string; password: string }
   }
 };
 
+ export const resetPassword = async(req:Request<{email:string,newPassword:string}>,res:Response)=>{
+   try {
+   const {email,newPassword}= req.body
+   const {error} = resetPasswordSchema.validate(req.body)
+   if(error){
+    return res.status(404).json(error.details[0].message)
+}
+    const hashedPassword =  await bcrypt.hash(newPassword,10)
+   const pool =  await mssql.connect(sqlConfig)
+   let result  = await pool.request()
+   .input('email',email).input('newPassword',hashedPassword).execute('resetPassword')
+   if(result.rowsAffected[0]>0){
+    return res.status(200).json({message:"password reset successfully"})
+   }else{
+    return res.status(404).json({message:"user does not exist"})
+   }
+   } catch (error:any) {
+     return res.status(500).json(error.message)
+   }
+ }

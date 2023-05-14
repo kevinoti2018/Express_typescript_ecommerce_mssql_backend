@@ -1,9 +1,11 @@
-import { deleteUser, getAllUsersController, getSingleUser, registerusercontroller,loginUser} from "../Controllers/UserController";
+import { deleteUser, getAllUsersController, getSingleUser, registerusercontroller,loginUser, resetPassword} from "../Controllers/UserController";
 import { Router } from "express";
 
  export const router=Router()
- router.get('/getusers',getAllUsersController)
+
 router.post('/adduser',registerusercontroller)
 router.post('/loginuser',loginUser)
+router.get('/getusers',getAllUsersController)
+router.patch('/reset',resetPassword)
 router.get('/getuser/:id',getSingleUser)
 router.delete('/deleteuser/:id',deleteUser)
