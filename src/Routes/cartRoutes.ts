@@ -3,4 +3,4 @@ import { addToCart } from "../Controllers/cartcontroller";
 
 export const cartrouter=Router()
 
-cartrouter.post('/add_to_cart/:user_id/:product_id',addToCart)
+cartrouter.post('/add_to_cart/:product_id',addToCart)
