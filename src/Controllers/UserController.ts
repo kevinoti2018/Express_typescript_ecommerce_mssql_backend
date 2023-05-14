@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import {v4 as uid} from 'uuid'
 import jwt from 'jsonwebtoken'
 import { registrationSchema, resetPasswordSchema } from "../Helpers/joiauth";
+import { DatabaseHelper } from "../Helpers";
 interface ExtendedRequest extends Request{
     body:{
         id:string,
@@ -39,13 +40,14 @@ export const registerusercontroller= async(req:ExtendedRequest,res:Response)=>{
         const hashedPassword = await bcrypt.hash(password,10)
 
         //connect to database
-        let pool=await mssql.connect(sqlConfig)
-        await pool.request()
-        .input('id',mssql.VarChar,id)
-        .input('username',mssql.VarChar,username)
-        .input('email',mssql.VarChar,email)
-        .input('password',mssql.VarChar,hashedPassword)
-        .execute('insertUser')
+        await DatabaseHelper.exec('insertUser',{id,username,email,password:hashedPassword})
+        // let pool=await mssql.connect(sqlConfig)
+        // await pool.request()
+        // .input('id',mssql.VarChar,id)
+        // .input('username',mssql.VarChar,username)
+        // .input('email',mssql.VarChar,email)
+        // .input('password',mssql.VarChar,hashedPassword)
+        // .execute('insertUser')
         
         return res.status(201).json({message:"user added"})
 
@@ -59,8 +61,8 @@ export const registerusercontroller= async(req:ExtendedRequest,res:Response)=>{
 export const getAllUsersController:RequestHandler=async(req,res)=>{
     
     try {
-        const pool =  await mssql.connect(sqlConfig)
-        let users:User[] =(await (await pool.request()).execute('getusers')).recordset
+     
+        let users:User[] = await (await DatabaseHelper.exec('getusers',{})).recordset
         res.status(200).json(users)
     } catch (error:any) {
          //server side error
@@ -72,15 +74,22 @@ export const getSingleUser=async(req:Request<{id:string}>,res:Response)=>{
    try {
        let {id}=req.params
        //connect to database
-       let pool=await mssql.connect(sqlConfig)
+      
+      //  let pool=await mssql.connect(sqlConfig)
 
-       let user:User[]=await (await pool.request().input('id',mssql.VarChar,id).execute('getUser')).recordset
+       let user:User[]= await (await DatabaseHelper.exec('getuser',{id})).recordset
        
-      res.status(200).json(user)
+       if(user.length>0){
+        res.status(200).json(user)
+      }
+      else{
+        return res.status(404).json({message:"user does not exist"})
+      }
+     
 
 
-   } catch (error) {
-    
+   } catch (error:any) {
+     res.status(500).json(error.message)
    }
 
 }
@@ -90,8 +99,7 @@ export const deleteUser=async(req:Request<{id:string}>,res:Response)=>{
     try {
          
         let {id}=req.params
-        let pool=await mssql.connect(sqlConfig)
-        let user= await pool.request().input('id',id).execute('deleteUser')
+        let user= await DatabaseHelper.exec('deleteUser',{id})
         if(user.rowsAffected[0]>0){
           return res.status(200).json({message:"user deleted successfully"})
         }
@@ -99,7 +107,7 @@ export const deleteUser=async(req:Request<{id:string}>,res:Response)=>{
           return res.status(404).json({message:"user does not exist"})
         }
         
-
+        //await DatabaseHelper.exec('insertUser',{id,username,email,password:hashedPassword})
     } catch (error:any) {
         res.status(500).json(error.message)
     }
@@ -111,11 +119,13 @@ export const deleteUser=async(req:Request<{id:string}>,res:Response)=>{
 export const loginUser = async (req: Request<{ email: string; password: string }>, res: Response) => {
   try {
     const { email, password } = req.body;
-    const pool = await mssql.connect(sqlConfig);
-    const result = await pool
-      .request()
-      .input("email", mssql.VarChar(100), email)
-      .execute("getUserByEmail");
+
+    const result = await DatabaseHelper.exec('getUserByEmail',{email})
+    // const pool = await mssql.connect(sqlConfig);
+    // const result = await pool
+    //   .request()
+    //   .input("email", mssql.VarChar(100), email)
+    //   .execute("getUserByEmail");
     const user = result.recordset[0];
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -139,9 +149,10 @@ export const loginUser = async (req: Request<{ email: string; password: string }
     return res.status(404).json(error.details[0].message)
 }
     const hashedPassword =  await bcrypt.hash(newPassword,10)
-   const pool =  await mssql.connect(sqlConfig)
-   let result  = await pool.request()
-   .input('email',email).input('newPassword',hashedPassword).execute('resetPassword')
+     let result = await DatabaseHelper.exec('resetPassword',{email,newPassword:hashedPassword})
+  //  const pool =  await mssql.connect(sqlConfig)
+  //  let result  = await pool.request()
+  //  .input('email',email).input('newPassword',hashedPassword).execute('resetPassword')
    if(result.rowsAffected[0]>0){
     return res.status(200).json({message:"password reset successfully"})
    }else{
