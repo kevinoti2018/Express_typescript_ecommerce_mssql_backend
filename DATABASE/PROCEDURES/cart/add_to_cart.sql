@@ -7,5 +7,4 @@ AS
 BEGIN
   INSERT INTO cart (user_id, product_id, quantity, price)
   VALUES (@user_id, @product_id, @quantity, @price)
-ENDuser_id, @product_id, @quantity, @price)
 END
