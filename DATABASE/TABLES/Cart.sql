@@ -1,7 +1,12 @@
+-- Create the CART table
 CREATE TABLE CART (
-ID INT IDENTITY(1,1) PRIMARY KEY,
-user_id VARCHAR(100) NOT NULL REFERENCES USERDB(id),
-product_id VARCHAR(100) NOT NULL REFERENCES PRODUCTS(id),
-quantity INT NOT NULL,
-order_date DATETIME DEFAULT GETDATE()
+  product_id VARCHAR(100) NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(18, 2) NOT NULL,
+  CONSTRAINT PK_CART PRIMARY KEY (product_id)
 );
+
+-- Create a unique index on product_id to prevent duplicates
+CREATE UNIQUE INDEX UX_PRODUCT_ID ON CART (product_id);
+
+
