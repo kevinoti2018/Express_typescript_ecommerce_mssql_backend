@@ -4,3 +4,6 @@ CREATE TABLE USERDB (
     email VARCHAR(50) UNIQUE,
     password VARCHAR(200)
 );
+
+
+

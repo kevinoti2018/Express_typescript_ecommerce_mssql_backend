@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { addProduct, deleteProduct, getAllProductsController,getSingleProduct, updateProduct } from "../Controllers/Productscontroller";
-import { verifyLogin } from "../Middleware/verifyLogin";
+import { verifyLogin } from "../middleware/verifyLogin";
 
+ 
  export const routerproducts=Router()
 
  routerproducts.post('/addproduct',verifyLogin,addProduct)

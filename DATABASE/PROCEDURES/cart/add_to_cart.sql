@@ -4,6 +4,7 @@ CREATE OR ALTER PROCEDURE add_to_cart
   @price DECIMAL(18, 2)
 AS
 BEGIN
+<<<<<<< HEAD
   -- Check if the product is already in the cart
   IF EXISTS (
     SELECT 1
@@ -25,3 +26,8 @@ BEGIN
 END;
 
 
+=======
+  INSERT INTO cart (user_id, product_id, quantity, price)
+  VALUES (@user_id, @product_id, @quantity, @price)
+END
+>>>>>>> dd1b5583271db5ff3b4a0dd6191b8cb4cb1259a6
