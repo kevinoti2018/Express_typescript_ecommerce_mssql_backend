@@ -5,10 +5,10 @@ import path from 'path'
 dotenv.config({path:path.resolve(__dirname, '../../.env')})
 
 export const sqlConfig = {
-  user: "sa" as string,
-  password: "#Kyu@2019" as string,
-  database: "Jitu1" as string,
-  server: "localhost" as string,
+  user: process.env.DB_USER as string,
+  password: process.env.DB_PWD as string,
+  database: process.env.DB_NAME as string,
+  server: process.env.DB_SERVER as string,
   pool: {
     max: 10,
     min: 0,

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { addProduct, deleteProduct, getAllProductsController,getSingleProduct, updateProduct } from "../Controllers/Productscontroller";
-import { verifyLogin } from "../middleware/verifyLogin";
+import { verifyLogin } from "../Middleware/verifyLogin";
 
  
  export const routerproducts=Router()

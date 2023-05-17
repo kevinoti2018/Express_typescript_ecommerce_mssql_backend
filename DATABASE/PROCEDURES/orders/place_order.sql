@@ -1,9 +1,10 @@
 CREATE OR ALTER PROCEDURE place_order
-  @product_id VARCHAR,
+  @user_id VARCHAR(100),
+  @product_id VARCHAR(100),
   @quantity INT,
-  @price DECIMAL(10,2)
+  @price DECIMAL(10, 2)
 AS
 BEGIN
-  INSERT INTO orders ( product_id, quantity, price)
-  VALUES ( @product_id, @quantity, @price)
-END
+  INSERT INTO ORDERS (user_id, product_id, quantity, price)
+  VALUES (@user_id, @product_id, @quantity, @price);
+END;
