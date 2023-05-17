@@ -11,7 +11,9 @@ interface ExtendedRequest extends Request{
         id:string,
         username:string,
         email:string,
-        password:string
+        password:string,
+       
+        
     }
 }
 
@@ -20,6 +22,8 @@ interface User{
     name:string
     email:string
     password:string
+    isAdmin:number,
+    resetSuccess:number
 }
 
 export const registerusercontroller= async(req:ExtendedRequest,res:Response)=>{
@@ -121,11 +125,7 @@ export const loginUser = async (req: Request<{ email: string; password: string }
     const { email, password } = req.body;
 
     const result = await DatabaseHelper.exec('getUserByEmail',{email})
-    // const pool = await mssql.connect(sqlConfig);
-    // const result = await pool
-    //   .request()
-    //   .input("email", mssql.VarChar(100), email)
-    //   .execute("getUserByEmail");
+  
     const user = result.recordset[0];
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -134,7 +134,10 @@ export const loginUser = async (req: Request<{ email: string; password: string }
     if (!isValidPassword) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-    const token = jwt.sign(email,'ttttweywastring' as string)
+    const { resetSuccess, username, isSent,id,...rest } = user;
+    const payload = rest;
+    console.log(payload)
+    const token = jwt.sign(payload,'ttttweywastring' as string)
     return res.json({mesage:"Login Successfull!!",token})
   } catch (error: any) {
     res.status(500).json(error.message);
