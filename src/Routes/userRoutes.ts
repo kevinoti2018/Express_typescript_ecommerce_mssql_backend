@@ -6,6 +6,6 @@ import { Router } from "express";
 router.post('/adduser',registerusercontroller)
 router.post('/loginuser',loginUser)
 router.get('/getusers',getAllUsersController)
-router.patch('/reset',resetPassword)
+router.put('/reset',resetPassword)
 router.get('/getuser/:id',getSingleUser)
 router.delete('/deleteuser/:id',deleteUser)

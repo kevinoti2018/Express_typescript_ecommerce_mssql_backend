@@ -152,7 +152,7 @@ export const loginUser = async (req: Request<{ email: string; password: string }
     return res.status(404).json(error.details[0].message)
 }
     const hashedPassword =  await bcrypt.hash(newPassword,10)
-     let result = await DatabaseHelper.exec('resetPassword',{email,newPassword:hashedPassword})
+     let result = await DatabaseHelper.exec('resetingPassword',{email,newPassword:hashedPassword})
   //  const pool =  await mssql.connect(sqlConfig)
   //  let result  = await pool.request()
   //  .input('email',email).input('newPassword',hashedPassword).execute('resetPassword')

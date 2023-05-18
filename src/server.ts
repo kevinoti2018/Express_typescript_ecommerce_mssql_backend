@@ -1,5 +1,5 @@
 import express  from "express";
-import { router } from "./Routes/userRoutes";
+import { router } from "./Routes/userRoutes"
 import { routerproducts } from "./Routes/productsRoutes";
 import  { cartrouter } from "./Routes/cartRoutes";
 import { orderRoutes } from "./Routes/orderRoutes";
