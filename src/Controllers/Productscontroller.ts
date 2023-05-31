@@ -27,16 +27,7 @@ export const addProduct:RequestHandler = async (req:ExtendedRequest,res:Response
     const id = uid();
     const {name,description,price,images} = req.body;
      //connect to database
-     await DatabaseHelper.exec('AddProduct',{id,name,description,price,images})
-    //  let pool=await mssql.connect(sqlConfig)
-    //  await pool.request()
-    //  .input('id',mssql.VarChar,id)
-    //  .input('name',mssql.VarChar,name)
-    //  .input('description',mssql.VarChar,description)
-    //  .input('price',mssql.VarChar,price)
-    //  .input('images',mssql.VarChar,images)
-    //  .execute('AddProduct')
-     
+     await DatabaseHelper.exec('AddProduct',{id,name,description,price,images}) 
      return res.status(201).json({message:"product added"})
   } catch (error:any) {
     res.status(500).json(error.message)
@@ -115,14 +106,6 @@ export const updateProduct = async (req: Request<{ id: string }>, res: Response)
       else{
         res.status(404).json({message:"not found"})
       }
-      // let product=await (await pool
-      //   .request()
-      //   .input("id", mssql.VarChar(100), id)
-      //   .input("name", mssql.VarChar(100), name)
-      //   .input("description", mssql.VarChar(1000), description)
-      //   .input("price", mssql.VarChar(100), price)
-      //   .input("images", mssql.VarChar(200), images)
-      //   .execute("updateProduct")).recordset
      
     } catch (error: any) {
       res.status(500).json(error.message);

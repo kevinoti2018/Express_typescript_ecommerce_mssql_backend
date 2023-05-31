@@ -14,3 +14,4 @@ import { verifyAdmin } from "../Middleware/verifyLogin";
  routerproducts.get('/getproduct/:id/',getSingleProduct)
  routerproducts.put('/updateproduct/:id',verifyAdmin,updateProduct)
  routerproducts.delete('/deleteproduct/:id/',verifyAdmin,deleteProduct)
+
