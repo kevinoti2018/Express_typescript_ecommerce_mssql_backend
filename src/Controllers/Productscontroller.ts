@@ -1,7 +1,6 @@
 import {Response,Request, RequestHandler } from "express";
 import { sqlConfig } from "../config";
 import mssql from 'mssql'
-import bcrypt from 'bcrypt';
 import {v4 as uid} from 'uuid'
 import { DatabaseHelper } from "../Helpers";
 interface ExtendedRequest extends Request{
@@ -21,13 +20,22 @@ interface PRODUCT {
     price:string
 }
 
-
+interface CATEGORIES{
+  id:string,
+  name:string,
+  image:string
+}
 export const addProduct:RequestHandler = async (req:ExtendedRequest,res:Response)=>{
   try {
     const id = uid();
     const {name,description,price,images} = req.body;
      //connect to database
+<<<<<<< HEAD
      await DatabaseHelper.exec('AddProduct',{id,name,description,price,images}) 
+=======
+     await DatabaseHelper.exec('AddProduct',{id,name,description,price,images})
+     
+>>>>>>> 1ee7fb345614b8f8b5b2d35abc7f6270cea2ca79
      return res.status(201).json({message:"product added"})
   } catch (error:any) {
     res.status(500).json(error.message)
@@ -43,6 +51,20 @@ export const getAllProductsController:RequestHandler=async(req,res)=>{
         // const pool =  await mssql.connect(sqlConfig)
         // let products:PRODUCT[] =(await (await pool.request()).execute('getProducts')).recordset
         res.status(200).json(products)
+    } catch (error:any) {
+         //server side error
+         return res.status(500).json(error.message)
+    }
+}
+
+export const getAllCategoriesController:RequestHandler=async(req,res)=>{
+    
+    try {
+        
+      let categories:CATEGORIES[] = await (await DatabaseHelper.exec('getCategories',{})).recordset
+        // const pool =  await mssql.connect(sqlConfig)
+        // let products:PRODUCT[] =(await (await pool.request()).execute('getProducts')).recordset
+        res.status(200).json(categories)
     } catch (error:any) {
          //server side error
          return res.status(500).json(error.message)
@@ -106,7 +128,6 @@ export const updateProduct = async (req: Request<{ id: string }>, res: Response)
       else{
         res.status(404).json({message:"not found"})
       }
-     
     } catch (error: any) {
       res.status(500).json(error.message);
     }
