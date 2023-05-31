@@ -10,8 +10,7 @@ interface ExtendedRequest extends Request{
         name:string,
         description:string,
         price:string,
-        images:string,
-        user_id:string
+        images:string
     }
 }
 interface PRODUCT {
@@ -26,9 +25,9 @@ interface PRODUCT {
 export const addProduct:RequestHandler = async (req:ExtendedRequest,res:Response)=>{
   try {
     const id = uid();
-    const {name,description,price,images,user_id} = req.body;
+    const {name,description,price,images} = req.body;
      //connect to database
-     await DatabaseHelper.exec('AddProduct',{name,description,price,images,user_id})
+     await DatabaseHelper.exec('AddProduct',{id,name,description,price,images})
     //  let pool=await mssql.connect(sqlConfig)
     //  await pool.request()
     //  .input('id',mssql.VarChar,id)
