@@ -30,12 +30,8 @@ export const addProduct:RequestHandler = async (req:ExtendedRequest,res:Response
     const id = uid();
     const {name,description,price,images} = req.body;
      //connect to database
-<<<<<<< HEAD
-     await DatabaseHelper.exec('AddProduct',{id,name,description,price,images}) 
-=======
      await DatabaseHelper.exec('AddProduct',{id,name,description,price,images})
      
->>>>>>> 1ee7fb345614b8f8b5b2d35abc7f6270cea2ca79
      return res.status(201).json({message:"product added"})
   } catch (error:any) {
     res.status(500).json(error.message)
