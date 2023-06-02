@@ -1,8 +1,7 @@
 CREATE OR ALTER PROCEDURE add_to_cart
   @cart_id VARCHAR(100),
   @product_id VARCHAR(100),
-  @quantity INT,
-  @price DECIMAL(18, 2)
+  @user_id VARCHAR(100)
 AS
 BEGIN
   -- Check if the product is already in the cart
@@ -18,11 +17,12 @@ BEGIN
   ELSE
   BEGIN
     -- Insert a new product into the cart
-    INSERT INTO CART (cart_id,product_id, quantity, price)
-    VALUES (@cart_id,@product_id, @quantity, @price)
+    INSERT INTO CART (user_id,cart_id,product_id)
+    VALUES (@user_id,@cart_id,@product_id)
     
     -- Product added to the cart
     SELECT 'Product added to the cart' AS response
   END
 END;
+
 

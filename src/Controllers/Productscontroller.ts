@@ -71,13 +71,8 @@ export const getAllCategoriesController:RequestHandler=async(req,res)=>{
 export const getSingleProduct=async(req:Request<{id:string}>,res:Response)=>{
    try {
        let {id}=req.params
-       let product:PRODUCT[] = await (await DatabaseHelper.exec('getSingleProduct',{id})).recordset
-       //connect to database
-      //  let pool=await mssql.connect(sqlConfig)
-       
-      //  let product:PRODUCT[]=await (await pool.request().input('id',mssql.VarChar,id).execute('getSingleProduct')).recordset
-
-       if(product.length>0){
+       let product:PRODUCT = await (await DatabaseHelper.exec('getSingleProduct',{id})).recordset[0]
+       if(product){
         res.status(200).json(product)
        }else{
         res.status(500).json({message:"product does not exist"})

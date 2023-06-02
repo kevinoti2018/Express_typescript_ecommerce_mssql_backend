@@ -3,8 +3,10 @@ import { router } from "./Routes/userRoutes"
 import { routerproducts } from "./Routes/productsRoutes";
 import  { cartrouter } from "./Routes/cartRoutes";
 import { orderRoutes } from "./Routes/orderRoutes";
+import cors from 'cors';
 const app=express()
 app.use(express.json())
+app.use(cors())
 
 
 

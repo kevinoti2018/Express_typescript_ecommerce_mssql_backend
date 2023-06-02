@@ -1,8 +1,8 @@
 CREATE OR ALTER PROCEDURE get_cart_details
-  @cart_id VARCHAR(100)
+  @user_id VARCHAR(100)
 AS
 BEGIN
   SELECT *
   FROM CART
-  WHERE cart_id = @cart_id
+  WHERE user_id = @user_id
 END;

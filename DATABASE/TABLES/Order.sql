@@ -26,6 +26,7 @@ CREATE TABLE ORDERSDB (
 /**Procedure***/
 CREATE PROCEDURE MakeOrder
     @cart_id VARCHAR(100)
+    @user_id VARCHAR(100)
 AS
 BEGIN
     -- Declare variables to store cart data
