@@ -8,3 +8,5 @@ BEGIN
   INSERT INTO ORDERS (user_id, product_id, quantity, price)
   VALUES (@user_id, @product_id, @quantity, @price);
 END;
+
+

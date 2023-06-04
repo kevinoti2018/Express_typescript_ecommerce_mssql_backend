@@ -9,8 +9,7 @@ interface ExtendedRequest extends Request{
         name:string,
         description:string,
         price:string,
-        images:string,
-        user_id:string
+        images:string
     }
 }
 interface PRODUCT {
