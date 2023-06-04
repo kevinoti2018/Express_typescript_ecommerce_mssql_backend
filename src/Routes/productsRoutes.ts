@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addProduct, deleteProduct, getAllCategoriesController, getAllProductsController,getSingleProduct, updateProduct } from "../Controllers/Productscontroller";
+import { addProduct, deleteProduct, getAllCategoriesController, getAllProductsController,getProductsByCategoryController,getSingleProduct, updateProduct } from "../Controllers/Productscontroller";
 import { verifyAdmin,verifyLogin } from "../middleware/verifyLogin";
 
 
@@ -12,6 +12,7 @@ import { verifyAdmin,verifyLogin } from "../middleware/verifyLogin";
 
  routerproducts.get('/getproducts',getAllProductsController)
  routerproducts.get('/getcategories',getAllCategoriesController)
+ routerproducts.get('/getcategory/:categoryId',getProductsByCategoryController)
  routerproducts.get('/getproduct/:id/',verifyAdmin,getSingleProduct)
  routerproducts.patch('/updateproduct/:id',verifyAdmin,updateProduct)
  routerproducts.delete('/deleteproduct/:id/',verifyAdmin,deleteProduct)

@@ -3,5 +3,6 @@ CREATE TABLE PRODUCTS (
      name VARCHAR(100),
      description VARCHAR(1000),
 	images VARCHAR(1000),
-     price DECIMAL(10, 2)
+     price DECIMAL(10, 2),
+     categoryId VARCHAR(200)
 );
