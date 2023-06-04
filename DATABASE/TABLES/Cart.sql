@@ -1,10 +1,8 @@
-CREATE TABLE CART (
-  user_id VARCHAR(100) NOT NULL,
-  cart_id VARCHAR(100) PRIMARY KEY,
-  product_id VARCHAR(100) NOT NULL,
-  quantity INT NOT NULL DEFAULT 1,
-  subtotal INT,
-  FOREIGN KEY (user_id) REFERENCES USERS(Id)
-);
-
+CREATE TABLE cart(
+    id VARCHAR(255) PRIMARY KEY,
+    product_id VARCHAR(200) FOREIGN KEY REFERENCES product(id) NOT NULL,
+    user_id VARCHAR(200) FOREIGN KEY REFERENCES users(id) NOT NULL,
+    quantity INT DEFAULT 0,
+    isDeleted INT DEFAULT 0
+)
 
