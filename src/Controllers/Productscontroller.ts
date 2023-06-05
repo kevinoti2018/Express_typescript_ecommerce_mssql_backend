@@ -5,7 +5,7 @@ import {v4 as uid} from 'uuid'
 import { DatabaseHelper } from "../Helpers";
 interface ExtendedRequest extends Request{
     body:{
-      category_id:string,
+      categoryId:string,
         id:string,
         name:string,
         description:string,
@@ -14,7 +14,7 @@ interface ExtendedRequest extends Request{
     }
 }
 interface PRODUCT {
-    category_id:string,
+    categoryId:string,
     id:string,
     name :string,
     description:string,
@@ -30,9 +30,9 @@ interface CATEGORIES{
 export const addProduct:RequestHandler = async (req:ExtendedRequest,res:Response)=>{
   try {
     const id = uid();
-    const {category_id,name,description,price,images} = req.body;
+    const {categoryId,name,description,price,images} = req.body;
      //connect to database
-     await DatabaseHelper.exec('AddProduct',{id,category_id,name,description,price,images})
+     await DatabaseHelper.exec('AddProduct',{id,categoryId,name,description,price,images})
      
      return res.status(201).json({message:"product added"})
   } catch (error:any) {

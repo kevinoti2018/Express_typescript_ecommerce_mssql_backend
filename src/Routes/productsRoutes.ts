@@ -1,7 +1,6 @@
+import { verifyAdmin } from './../middleware/verifyLogin';
 import { Router } from "express";
 import { addProduct, deleteProduct, getAllCategoriesController, getAllProductsController, getProductsByCategoryController, getSingleProduct, updateProduct } from "../Controllers/Productscontroller";
-
-import { verifyAdmin,verifyLogin } from "../Middleware/verifyLogin";
 
 // import { verifyAdmin } from "../Middleware/verifyLogin";
 // import { addProduct, deleteProduct, getAllProductsController, getSingleProduct, updateProduct } from "../Controllers/Productscontroller";
