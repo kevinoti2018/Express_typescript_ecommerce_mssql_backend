@@ -19,7 +19,13 @@ export class DatabaseHelper{
        return  request.execute(storedProcedure)
     }
 
-    static async query(queryString:string){
-        return await(await DatabaseHelper.pool).request().query(queryString)
-    }
+    static async query(queryString: string, data?: { [x: string]: string | number }) {
+        let request: mssql.Request = (await DatabaseHelper.pool).request();
+      
+        if (data) {
+          request = DatabaseHelper.addInputsToRequest(request, data);
+        }
+      
+        return await request.query(queryString);
+      }
 }

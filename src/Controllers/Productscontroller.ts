@@ -5,6 +5,7 @@ import {v4 as uid} from 'uuid'
 import { DatabaseHelper } from "../Helpers";
 interface ExtendedRequest extends Request{
     body:{
+      category_id:string,
         id:string,
         name:string,
         description:string,
@@ -13,6 +14,7 @@ interface ExtendedRequest extends Request{
     }
 }
 interface PRODUCT {
+    category_id:string,
     id:string,
     name :string,
     description:string,
@@ -28,9 +30,9 @@ interface CATEGORIES{
 export const addProduct:RequestHandler = async (req:ExtendedRequest,res:Response)=>{
   try {
     const id = uid();
-    const {name,description,price,images} = req.body;
+    const {category_id,name,description,price,images} = req.body;
      //connect to database
-     await DatabaseHelper.exec('AddProduct',{id,name,description,price,images})
+     await DatabaseHelper.exec('AddProduct',{id,category_id,name,description,price,images})
      
      return res.status(201).json({message:"product added"})
   } catch (error:any) {
@@ -121,6 +123,20 @@ export const updateProduct = async (req: Request<{ id: string }>, res: Response)
       }
     } catch (error: any) {
       res.status(500).json(error.message);
+    }
+  };
+  
+
+  export const getProductsByCategoryController: RequestHandler = async (req, res) => {
+    const categoryId = req.params.categoryId;
+  
+    try {
+      const query = `SELECT * FROM products WHERE category_id = @categoryId`;
+      const result = await DatabaseHelper.query(query, { categoryId });
+  
+      res.status(200).json(result.recordset);
+    } catch (error:any) {
+      res.status(500).json({ message: error.message });
     }
   };
   

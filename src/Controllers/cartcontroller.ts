@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { sqlConfig } from "../config";
-import mssql from 'mssql'
 import {v4 as uid} from 'uuid'
 import { DatabaseHelper } from '../Helpers';
 
