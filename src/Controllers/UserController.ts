@@ -137,8 +137,8 @@ export const loginUser = async (req: Request<{ email: string; password: string }
     const { resetSuccess, username, isSent,id,...rest } = user;
     const payload = rest;
     console.log(payload)
-    const token = jwt.sign(payload,'ttttweywastring' as string)
-    return res.json({mesage:"Login Successfull!!",token})
+    const token = jwt.sign(payload,'ttttweywastring' as string,{expiresIn:'360000s'})
+    return res.json({mesage:"Login Successfull!!",token, role:user.isAdmin,username:user.username})
   } catch (error: any) {
     res.status(500).json(error.message);
   }
@@ -157,7 +157,10 @@ export const loginUser = async (req: Request<{ email: string; password: string }
   //  let result  = await pool.request()
   //  .input('email',email).input('newPassword',hashedPassword).execute('resetPassword')
    if(result.rowsAffected[0]>0){
+    let response = result.rowsAffected[0]
     return res.status(200).json({message:"password reset successfully"})
+    console.log(response); 
+    
    }else{
     return res.status(404).json({message:"user does not exist"})
    }

@@ -125,3 +125,17 @@ export const updateProduct = async (req: Request<{ id: string }>, res: Response)
   };
   
 
+  export const getProductsByCategoryController: RequestHandler = async (req, res) => {
+    const categoryId = req.params.categoryId;
+  
+    try {
+      const query = `SELECT * FROM products WHERE categoryId = @categoryId`;
+      const result = await DatabaseHelper.query(query, { categoryId });
+  
+      res.status(200).json(result.recordset);
+    } catch (error:any) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
