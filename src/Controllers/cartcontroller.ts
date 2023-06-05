@@ -3,21 +3,22 @@ import {v4 as uid} from 'uuid'
 import { DatabaseHelper } from '../Helpers';
 
 
+
+
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
   try {
-    let cart_id=uid();
+    let cart_id = uid();
     const { product_id } = req.params;
-    const { quantity, price } = req.body;
-  
+
     const data = {
-      cart_id:cart_id,
+      id: cart_id,
       product_id: product_id,
-      quantity: quantity,
-      price: price
+      user_id:'bdjeyhd83494'
+      // user_id: req.user.id // Assuming you have the user's ID available in the request object
     };
 
-    const result = await DatabaseHelper.exec('add_to_cart', data);
-    const response = result.recordset[0].response;
+    const result = await DatabaseHelper.exec('insertProductToCart', data);
+    const response = result.recordset;
 
     res.status(200).json({ message: response });
   } catch (error: any) {
@@ -26,19 +27,18 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-
 export const getCartDetails = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { cart_id } = req.params;
+    const user_id = 'bdjeyhd83494';
 
     const data = {
-      cart_id: cart_id
+      user_id: user_id
     };
 
-    const result = await DatabaseHelper.exec('get_cart_details', data);
+    const result = await DatabaseHelper.exec('getAllInCart', data);
     const cartDetails = result.recordset;
 
-    res.status(200).json({ cartDetails });
+    res.status(200).json(cartDetails);
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ message: error.message });
@@ -46,4 +46,41 @@ export const getCartDetails = async (req: Request, res: Response): Promise<void>
 };
 
 
+export const incrementProductInCart = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
 
+    await DatabaseHelper.exec('incrementProductInCart', { id });
+
+    res.status(200).json({ message: 'Product quantity incremented successfully' });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const decrementProductInCart = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    await DatabaseHelper.exec('decrementProductInCart', { id });
+
+    res.status(200).json({ message: 'Product quantity decremented successfully' });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteFromCart = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { product_id, user_id } = req.params;
+
+    await DatabaseHelper.exec('deleteToCart', { product_id, user_id });
+
+    res.status(200).json({ message: 'Product deleted from cart successfully' });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};

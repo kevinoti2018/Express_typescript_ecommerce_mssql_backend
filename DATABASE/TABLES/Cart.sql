@@ -1,11 +1,8 @@
--- Create the CART table
-CREATE TABLE CART (
-  id VARCHAR(100) NOT NULL,
-  product_id VARCHAR(100) NOT NULL,
-  quantity INT NOT NULL,
-  price DECIMAL(18, 2) NOT NULL,
-  CONSTRAINT PK_CART PRIMARY KEY (product_id),
-  CONSTRAINT FK_CART_PRODUCT FOREIGN KEY (product_id) REFERENCES PRODUCTS (id)
-);
-
+CREATE TABLE cart(
+    id VARCHAR(255) PRIMARY KEY,
+    product_id VARCHAR(200) FOREIGN KEY REFERENCES product(id) NOT NULL,
+    user_id VARCHAR(200) FOREIGN KEY REFERENCES users(id) NOT NULL,
+    quantity INT DEFAULT 0,
+    isDeleted INT DEFAULT 0
+)
 
